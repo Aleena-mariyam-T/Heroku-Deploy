@@ -1,16 +1,8 @@
+{% extends 'app/base.html'%}
 {% load static %}
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Buy now</title>
-    <link rel="stylesheet" href="{% static 'css/Checkout.css'%}">
-    <script src="https://polyfill.io/v3/polyfill.min.js?version=3.52.1&features=fetch"></script>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-
-<body>
-    <section>
+{% load crispy_forms_tags%}
+{% block body %}
+    <!-- <section>
         <div class="product">
             <div class="description">
                 <h3>{{ product.name }}</h3>
@@ -28,7 +20,25 @@
                 {% endfor %}
             </div>
         </div>
-    </section>
-</body>
+    </section> -->
+    <div class="box-form">   
+        
+        <div class="description" style="margin-top: 10%;
+        width: 100%;
+        margin-left: 21%;">
+        <p><h5><B>Payment Details : </B></h5></p> 
+            {% for price in prices %}
+            <div>
+                Ticket Amount : ${{ price.price }}
+                <br><br>
+                <form action="{% url 'create-checkout-session' price.id %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary btn-block col-sm-2">Checkout</button>
+                </form>
+            </div>
 
-</html>
+            {% endfor %}
+        </div>
+    </div>
+    
+{% endblock body%}
