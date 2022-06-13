@@ -65,7 +65,7 @@ def detailedview(request,pk):
 @login_required
 def event(request):
     if request.method == "POST":
-        form = addeventForm(request.POST)
+        form = addeventForm(request.POST,request.FILES)
         if form.is_valid():
             # event_name=form.cleaned_data.get('event_name')
             form.save()

@@ -8,7 +8,7 @@ jQuery(function ($) {
             if (result){
                 $.ajax({
                     method : 'GET',
-                    url :"{% 'CheckPaymentView' %}",
+                    url :"'{% 'CheckPaymentView' %}",
                 })
                 
             }

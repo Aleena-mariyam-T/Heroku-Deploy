@@ -79,26 +79,7 @@ body {
     width: 100%;
   }
 }
-.box-form .right h5 {
-  font-size: 6vmax;
-  line-height: 0;
-}
-.box-form .right p {
-  font-size: 14px;
-  color: #B0B3B9;
-}
-.box-form .right .inputs {
-  overflow: hidden;
-}
-.box-form .right input {
-  width: 100%;
-  padding: 10px;
-  margin-top: 25px;
-  font-size: 16px;
-  border: none;
-  outline: none;
-  border-bottom: 2px solid #B0B3B9;
-}
+
 .box-form .right .remember-me--forget-password {
   display: flex;
   /* justify-content: space-between; */
@@ -131,45 +112,4 @@ body {
   outline: 0;
   box-shadow: 0px 4px 20px 0px #49c628a6;
   background-image: linear-gradient(135deg, #70F570 10%, #49C628 100%);
-}
-label {
-  display: block;
-  position: relative;
-  margin-left: 30px;
-}
-
-label::before {
-  content: ' \f00c';
-  position: absolute;
-  font-family: FontAwesome;
-  background: transparent;
-  /* border: 3px solid #70F570; */
-  border-radius: 4px;
-  color: transparent;
-  left: -30px;
-  transition: all 0.2s linear;
-}
-
-label:hover::before {
-  font-family: FontAwesome;
-  content: ' \f00c';
-  color: #fff;
-  cursor: pointer;
-  background: #70F570;
-}
-
-label:hover::before .text-checkbox {
-  background: #70F570;
-}
-
-label span.text-checkbox {
-  display: inline-block;
-  height: auto;
-  position: relative;
-  cursor: pointer;
-  transition: all 0.2s linear;
-}
-
-label input[type="checkbox"] {
-  display: none;
 }

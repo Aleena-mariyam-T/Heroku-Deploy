@@ -6,7 +6,7 @@ class addevent(models.Model):
     event_name = models.CharField(max_length=100) 
     event_description=models.TextField()
     event_coordinator = models.CharField(max_length=100)
-    event_image = models.ImageField(upload_to='media/')
+    event_image = models.ImageField(upload_to='media/',blank=True, null=True,)
     event_location = models.CharField(max_length=100)
     event_start_date = models.DateTimeField(null=True)
     event_end_date = models.DateTimeField(null=True)
