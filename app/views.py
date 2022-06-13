@@ -1,31 +1,73 @@
+from multiprocessing import context
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.forms import AuthenticationForm
+from requests import request
 from .models import Ticket_types, addevent,Payment
 from .forms import addeventForm
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView,View,DetailView
 import stripe
 from django.conf import settings
+from django.core.paginator import Paginator 
+from django.contrib.auth.decorators import login_required
+
+
 
  # Create your views here.
 
 stripe.api_key = settings.STRIPE_SECRET_KEY 
 
-class MytemplateView(TemplateView):
-    template_name = 'app/index.html'
-    def get_context_data(self,**kwargs):
-        context = super(MytemplateView, self).get_context_data(**kwargs)
-        context['all_events'] = addevent.objects.all()
-        return context
+# class MytemplateView(TemplateView):
+#     template_name = 'app/index.html'
+#     def get_context_data(self,**kwargs):
+#         context = super(MytemplateView, self).get_context_data(**kwargs)
+def MytemplateView(request):
+    event_list = addevent.objects.all()
 
+    #pagination
+    p = Paginator(addevent.objects.all(),5)
+    page = request.GET.get('page')
+    events = p.get_page(page)   
+    # context['all_events'] = addevent.objects.all()
+    context={
+        'all_events': addevent.objects.all(),
+        'events' : events
+    }
+    return render(request,"app/index.html",context)
+
+
+
+#logout view
+class LogoutView(View):
+    def get(self,request):
+        messages.info(request,"You Logged out")
+        logout(request)
+        
+        return HttpResponseRedirect('/')
+
+
+
+def detailedview(request,pk):
+    event_details=addevent.objects.filter(id=pk)
+    print(event_details)
+    context={
+        'event_details':event_details
+    }
+    return render(request,"app/addevent_detail.html",context)
+
+
+
+
+#event view
+@login_required
 def event(request):
     if request.method == "POST":
         form = addeventForm(request.POST)
         if form.is_valid():
-            event_name=form.cleaned_data.get('event_name')
+            # event_name=form.cleaned_data.get('event_name')
             form.save()
             return redirect('/')
         else:
@@ -34,10 +76,11 @@ def event(request):
     else:
         form=addeventForm()
         return render(request,"app/addevent.html",context={"addeventForm":form})
+
+
 # user login
 
 def user_login(request):
-    try:
         if request.method == "POST":
             form = AuthenticationForm(request,data=request.POST)
             if form.is_valid():
@@ -46,22 +89,26 @@ def user_login(request):
                 user=authenticate(username=username,password=password)
                 print(user)
                 if user is not None:
+                    messages.info(request,"Login Successfull")
                     login(request,user)
                     return redirect("event")
-                else:
-                    messages.error(request,"Invalid login")
-                    return render(request,"app/login.html",context={"login_form":form})
+                # else:
+                #     messages.error(request,"Invalid login")
+                #     return render(request,"app/login.html",context={"login_form":form})
+                
             else:
-                    messages.error(request,"Invalid login")
+                    messages.error(request,"Invalid Credentials")
                     return render(request,"app/login.html",context={"login_form":form})
         else:
             form=AuthenticationForm()
             return render(request,"app/login.html",context={"login_form":form})
-    except Exception as e:
-        print(e)
-        form=AuthenticationForm()
-        return render(request,"app/login.html",context={"login_form":form})
-        
+    # except Exception as e:
+    #     print(e)
+    #     form=AuthenticationForm()
+    #     return render(request,"app/login.html",context={"login_form":form})
+
+
+
 class CheckPaymentView(TemplateView):
     print("payment view")
     template_name = "app/silver.html"
@@ -76,13 +123,17 @@ class CheckPaymentView(TemplateView):
         })  
         return context
 
+
 class Successview(TemplateView):
     template_name = "app/success.html"
+
 
 class CancelView(TemplateView):
     template_name = "app/cancel.html"
 
+
 YOUR_DOMAIN = "http://127.0.0.1:8000"
+
 
 class CreateCheckoutSessionView(View):
     print("checkoutview functn")

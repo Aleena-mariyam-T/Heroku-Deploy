@@ -1,24 +1,27 @@
-{% extends 'app/base.html'%}
+{% extends 'app/demo.html'%}
 {% load static %}
 {% load crispy_forms_tags%}
 {% block body %}
 <div class="container" >
+		<!-- <li><a href="{% url 'LogoutView' %}">Logout</a></li> -->
 	<div class="row">
 		<!-- <div class="col-sm-2">
 			<img src="{% static 'image.jpg'%}" alt="">
 		</div> -->
-		<div class="col-sm-6" >
+		<div class="col" style="width:100%;">
 			<div class="card logincard">
 				<article class="card-body">
 					<h4 class="card-title"></h4>
-					<form method="POST" method="{% url 'event' %}">
+					<form method="POST" action="{% url 'event' %}" enctype="multipart/form-data">
 						{% csrf_token %}
 						{{addeventForm|crispy}}
 						<div class="form-group">
-							<button type="submit" class="mybtn btn btn-primary btn-block col-sm-2"> Save  </button>
+							<button type="submit" id="eventsubmit" class="mybtn btn btn-primary btn-block col-sm-2"> Save  </button>
+							<!-- <button class="mybtn btn btn-primary btn-block col-sm-2"><a href="{% url 'CheckPaymentView' %}"></a>Payment</button> -->
 						</div> <!-- form-group// -->
-
+						
 					</form>
+					
 					{% if form.errors %}
     					<div class="alert alert-danger">
         				{{ form.errors }}
@@ -26,7 +29,25 @@
 					{% endif %}
 				</article>
 			</div>
+			<!-- <form action="{% url 'CheckPaymentView' %}" method="get">
+				<div class="form-group">
+					<button type="submit" class="mybtn btn btn-primary btn-block col-sm-2"> Pay  </button>
+				</div>
+			</form> -->
 	  	</div>
 	</div>
 </div>
+<style type="text/css">
+        .datepicker {
+            font-size: 0.875em;
+        }
+        /* solution 2: the original datepicker use 20px so replace with the following:*/
+        
+        .datepicker td, .datepicker th {
+            width: 1.5em;
+            height: 1.5em;
+        }
+        
+    </style>
+
 {% endblock body%}

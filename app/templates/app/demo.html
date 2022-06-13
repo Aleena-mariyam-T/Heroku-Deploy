@@ -1,0 +1,47 @@
+{% load static %}
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script
+    src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+    integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    crossorigin="anonymous"></script>
+  <script src="{% static 'js/appmain.js' %}"></script>
+  <title>Add Event</title>
+</head>
+<nav class="navbar navbar-expand-sm bg-light">
+
+  <!-- Links -->
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <!-- <a class="nav-link" href="#">Home</a> -->
+    </li>
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'LogoutView' %}">Logout</a>
+    </li>
+    <!-- <li class="nav-item">
+        <a class="nav-link" href="#">Link 3</a>
+      </li> -->
+  </ul>
+
+</nav>
+
+<body style="background-image: linear-gradient(293deg,#C5EFF7,transparent,#ace0e5);
+background-size: cover;">
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col">
+        <hr class="mt-0 mb-4">
+        {% block body %}{% endblock body %}
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

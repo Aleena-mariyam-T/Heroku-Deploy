@@ -17,26 +17,48 @@
 
 
 	<div class="right">
-		<div class="inputs" >
+		<div class="inputs">
 			<div class="card logincard">
 				<article class="card-body">
 					<h4 class="card-title">Sign in</h4>
-					<form method="POST" method="{% url 'user_login' %}">
+					<form method="POST" method="{% url 'user_login' %}" id="loginform">
 						{% csrf_token %}
 						{{login_form|crispy}}
+						{% for message in messages %}
+						<script>
+							window.onload = function () {
+								alert('{{message}}')
+							}
+						</script>
+						{% endfor %}
 						<div class="form-group">
-							<button type="submit" class="btn btn-primary btn-block"> Login  </button>
+							<button type="submit" id="submit" class="btn btn-primary btn-block"> Login </button>
 						</div> <!-- form-group// -->
 
 					</form>
-					{% if form.errors %}
-						<div class="alert alert-danger">
+					<!-- {% if messages %}
+					{% for message in messages %}
+					{% if message.tags %}  <script>alert("{{ message }}")</script> {% endif %}
+			
+					{% endfor %}
+			
+				{% endif %} -->
+					<!-- {% if messages %}
+					<ul class="messages">
+						{% for message in messages %}
+						<li{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
+						{% endfor %}
+					</ul>
+					{% endif %} -->
+					<!-- {% if form.errors %}
+					<div class="alert alert-danger">
 						{{ form.errors }}
-						</div>	
-					{% endif %}
+					</div>
+					{% endif %} -->
 				</article>
 			</div>
-		  </div>
+		</div>
+
 	</div>
 
 </div>

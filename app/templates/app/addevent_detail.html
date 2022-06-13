@@ -1,0 +1,74 @@
+{% extends 'app/base.html'%}
+{% load static %}
+{% load crispy_forms_tags%}
+{% block body %}
+    {% if event_details %}
+        {% for e in event_details %}
+            <div class="card col-md-6" style="margin-left: 25%;">
+                <h5>Event Details</h5>
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Name</label>
+                        <div class="col-sm-8">
+                            {{e.event_name}}
+                        </div>
+                    </div><hr>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Description</label>
+                        <div class="col-sm-8">
+                            {{e.event_description}}
+                        </div>
+                    </div><hr>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Conductor</label>
+                        <div class="col-sm-8">
+                            {{e.event_coordinator}}
+                        </div>
+                    </div><hr>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event image</label>
+                        <div class="col-sm-8">
+                            <!-- {{e.event_image}} -->
+                            <img src="{{ e.event_image.url }}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
+                        </div>
+                    </div>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Location</label>
+                        <div class="col-sm-8">
+                            {{e.event_location}}
+                        </div>
+                    </div><hr>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Start</label>
+                        <div class="col-sm-8">
+                            {{e.event_start_date}}
+                        </div>
+                    </div><hr>
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event End</label>
+                        <div class="col-sm-8">
+                            {{e.event_end_date}}
+                        </div>
+                    </div><br><br>
+                    
+                </div>
+            </div>    
+        {% endfor %}
+    {% else %}
+        <p> No Data</p>
+    {% endif %}
+    <!-- <div class="row" style="width: 50%;margin-left: 25%;">
+        <div class="card col">
+            <div class="card-body">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Comments</label>
+                        <input type="comments" class="form-control" id="exampleFormControlInput1" placeholder="comments...">
+                    </div>
+                    <button type="submit" class="btn btn-success col-sm-2">Submit</button>
+                </form> 
+            </div>
+        </div>
+    </div> -->
+{% endblock body%}

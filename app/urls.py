@@ -1,9 +1,11 @@
 from django.urls import path
 from .import views
 urlpatterns=[
-    # path('',MytemplateView.as_view(template_name="app/index.html")),
-    path('',views.MytemplateView.as_view(),name="MytemplateView"),
+    path('',views.MytemplateView,name="MytemplateView"),
+    # path('',views.MytemplateView.as_view(),name="MytemplateView"),
+    path('<pk>/detailedview',views.detailedview,name="detailedview"),
     path('user_login/',views.user_login,name="user_login"),
+    path('LogoutView/',views.LogoutView.as_view(),name="LogoutView"),
     path('event/',views.event,name="event"),
     path('CheckPaymentView/',views.CheckPaymentView.as_view(),name="CheckPaymentView"),
     # path('calculate_order_amount',views.calculate_order_amount),
