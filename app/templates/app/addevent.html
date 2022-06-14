@@ -12,13 +12,12 @@
 			<div class="card logincard">
 				<article class="card-body">
 					<h4 class="card-title"></h4>
-					<form method="POST" action="{% url 'event' %}" enctype="multipart/form-data">
+					<form method="POST" action="{% url 'successview' %}" enctype="multipart/form-data">
 						{% csrf_token %}
 						{{addeventForm|crispy}}
 						<div class="form-group">
 							<button type="submit" id="eventsubmit" class="mybtn btn btn-primary btn-block col-sm-2"> Save  </button>
-							<!-- <button class="mybtn btn btn-primary btn-block col-sm-2"><a href="{% url 'CheckPaymentView' %}"></a>Payment</button> -->
-						</div> <!-- form-group// -->
+						</div> 
 						
 					</form>
 					
@@ -29,11 +28,7 @@
 					{% endif %}
 				</article>
 			</div>
-			<!-- <form action="{% url 'CheckPaymentView' %}" method="get">
-				<div class="form-group">
-					<button type="submit" class="mybtn btn btn-primary btn-block col-sm-2"> Pay  </button>
-				</div>
-			</form> -->
+			
 	  	</div>
 	</div>
 </div>

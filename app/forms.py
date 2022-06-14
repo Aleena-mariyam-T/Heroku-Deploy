@@ -21,4 +21,4 @@ class addeventForm(ModelForm):
 class EventcommentForm(ModelForm):
     class Meta:
         model = Eventcomment
-        fields = '__all__'
+        fields = ['new_comment']

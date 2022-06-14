@@ -31,3 +31,4 @@ class Payment(models.Model):
 
 class Eventcomment(models.Model):
     comment=models.ForeignKey(addevent, on_delete=models.CASCADE)
+    new_comment=models.CharField(max_length=100)

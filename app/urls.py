@@ -3,14 +3,17 @@ from .import views
 urlpatterns=[
     path('',views.MytemplateView,name="MytemplateView"),
     # path('',views.MytemplateView.as_view(),name="MytemplateView"),
-    path('<pk>/detailedview',views.detailedview,name="detailedview"),
+    path('detailedview/<int:pk>/',views.detailedview,name="detailedview"),
     path('user_login/',views.user_login,name="user_login"),
     path('LogoutView/',views.LogoutView.as_view(),name="LogoutView"),
-    path('event/',views.event,name="event"),
+    # path('event/',views.event,name="event"),
     path('CheckPaymentView/',views.CheckPaymentView.as_view(),name="CheckPaymentView"),
     # path('calculate_order_amount',views.calculate_order_amount),
     # path('create_payment',views.create_payment,name="create_payment"),
     path('cancel/', views.CancelView.as_view(), name='cancel'),
-    path('success/', views.Successview.as_view(), name='success'),
-    path('create-checkout-session/<pk>/', views.CreateCheckoutSessionView.as_view(), name='create-checkout-session')
+    path('successview/', views.successview, name='successview'),
+    path('create-checkout-session/<pk>/', views.CreateCheckoutSessionView.as_view(), name='create-checkout-session'),
+    path('eventlist',views.eventlist,name="eventlist"),
+    path('userevents/<user_name>',views.userevents,name="userevents"),
+    # path('detailedview/<int:pk>/add_comment/',views.add_comment(),name="add_comment"),
 ]

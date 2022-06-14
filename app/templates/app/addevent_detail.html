@@ -29,7 +29,7 @@
                         <label for="staticEmail" class="col-sm-4 col-form-label">Event image</label>
                         <div class="col-sm-8">
                             {% if e.event_image %}
-                            <img src="{{ e.event_image.url }}" class="img-responsive" style="width: 100%; float: left; margin-right: 10px;" />
+                            <img src="{{ e.event_image.url }}" class="img-responsive" alt="" style="width: 100%; float: left; margin-right: 10px;"/>
                             {% else %}
                                 <p>No Image</p>
                             {% endif %}

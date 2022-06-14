@@ -1,0 +1,47 @@
+{% extends 'app/base.html'%}
+{% load static %}
+{% load crispy_forms_tags%}
+{% block nav %}
+    <div class="col">
+        <h5><b> Hello {{request.user.username}}</b></h5>
+    </div>
+{% endblock nav%}
+{% block body %}
+
+    {% if event_details %}
+        {% for e in event_details %}
+            <div class="card col-md-4" style="margin-left: 25%;">
+                
+                <div class="card-body">
+                    <div class="mb-3 row">
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Name</label>
+                        <div class="col-sm-8">
+                            {{e.event_name}}
+                        </div>
+                        <label for="staticEmail" class="col-sm-4 col-form-label">Event Date</label>
+                        <div class="col-sm-8">
+                            {{e.event_start_date}}
+                            
+                        </div>
+                    </div>
+                </div>
+            </div><br><br><br>         
+        {% endfor %}
+    {% else %}
+        <p> No Data</p>
+    {% endif %}
+    <!-- <div class="row" style="width: 50%;margin-left: 25%;">
+        <div class="card col">
+            <div class="card-body">
+                <form action="#" method="post">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="exampleFormControlInput1" class="form-label">Comments</label>
+                        <input type="comments" class="form-control" id="exampleFormControlInput1" placeholder="comments...">
+                    </div>
+                    <button type="submit" class="btn btn-success col-sm-2">Submit</button>
+                </form> 
+            </div>
+        </div>
+    </div> -->
+{% endblock body%}

@@ -6,12 +6,17 @@
 </head>
 
 <body>
+    {% if payment_status == 'success' %}
     <section>
         <p>
-            We appreciate you gave us a chance and made a purchase on our website.
+            Hey, congrats your event is published
         </p>
-        <a href="{% url 'MytemplateView' %}">Test again</a>
+        <a href="{% url 'MytemplateView' %}">Home</a>
     </section>
+    {% else %}
+        <p>oops,..  Something went wrong please try again</p>
+        <a href="{% url 'MytemplateView' %}">Home</a>
+    {% endif %}
 </body>
 
 </html>

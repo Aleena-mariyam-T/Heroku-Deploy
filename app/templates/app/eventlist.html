@@ -1,0 +1,33 @@
+{% extends 'app/base.html'%}
+{% load static %}
+{% load crispy_forms_tags%}
+{% block ul %}
+<li class="nav-item">
+    <a class="nav-link" href="{% url 'LogoutView' %}">Logout</a>
+</li>
+{% endblock ul %}
+{% block nav %}
+<div class="col">
+    <h5><b> Hello {{request.user.username}}</b></h5>
+</div>
+{% endblock nav%}
+{% block body %}
+
+<div class="row" style="margin-left:20%;margin-top: 5%;">
+    <div class="card" style="width: 25rem;">
+        <div class="card-body" style="text-align:center;">
+            <h5 class="card-title"> </h5>
+            
+            <a href="{% url 'userevents' user_name=request.user.username %}" class="card-link">My Events</a>
+        </div>
+    </div>
+    <div class="col-sm-2"></div>
+    <div class="card" style="width: 25rem;">
+        <div class="card-body" style="text-align:center;">
+            <h5 class="card-title"> </h5>
+            
+            <a href="{% url 'CheckPaymentView' %}" class="card-link">New Event</a> 
+        </div>
+    </div>
+</div>
+{% endblock body %}

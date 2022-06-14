@@ -27,7 +27,7 @@
 
 <body>
 	<!-- <img src="{% static 'images/demo/blog1.jpg' %}" alt=""> -->
-	<header id="header" style="background-image:url({% static 'images/demo/blog1.jpg' %})">
+	<header id="header" style="background-image:url({% static 'images/demo/blog3.jpg' %})">
 		<div id="" class="header-menu fixed">
 			<div class="box">
 				<div class="row">
@@ -69,7 +69,7 @@
 					<div class="entry-content">
 						<!-- <p><span class="start-text"><b></b></span></p> -->
 						<h4 class="entry-title"><a href="#">Organizing World class events</a></h4>
-						<h5><span><b>Schrodinger confirms that Germany international ...</b></span></h5>
+						<!-- <h5><span><b>Schrodinger confirms that Germany international ...</b></span></h5> -->
 					</div>
 				</div>
 			</div>
@@ -107,7 +107,7 @@
 			<div class="card-head col-sm-2">
 				<div class="nererer" style="background-color:#C5EFF7; text-align: center;">
 					<h4><b>{{event.event_name}}</b></h4>
-					<a href="{% url 'detailedview' event.id %}">View</a>
+					<a href="{% url 'detailedview' event.id %}">View Details</a>
 				</div>
 			</div>
 

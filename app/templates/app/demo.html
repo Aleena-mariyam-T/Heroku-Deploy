@@ -23,7 +23,7 @@
       <!-- <a class="nav-link" href="#">Home</a> -->
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="{% url 'LogoutView' %}">Logout</a>
+      <a class="nav-link" href="{% url 'MytemplateView' %}">Home</a>
     </li>
     <!-- <li class="nav-item">
         <a class="nav-link" href="#">Link 3</a>
@@ -32,8 +32,7 @@
 
 </nav>
 
-<body style="background-image: linear-gradient(293deg,#C5EFF7,transparent,#ace0e5);
-background-size: cover;">
+<body style="background-image:url({% static 'images/demo/blog1.jpg' %})">
   <div class="container">
     <div class="row justify-content-center">
       <div class="col">
