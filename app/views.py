@@ -29,7 +29,7 @@ def MytemplateView(request):
     event_list = addevent.objects.all()
 
     # pagination
-    p = Paginator(addevent.objects.all(), 5)
+    p = Paginator(addevent.objects.all(),3)
     page = request.GET.get('page')
     events = p.get_page(page)
     # context['all_events'] = addevent.objects.all()
@@ -37,9 +37,11 @@ def MytemplateView(request):
         'all_events': addevent.objects.all(),
         'events': events
     }
-    return render(request, "app/index.html", context)
+    return render(request, "app/Home.html", context)
 
-
+def about(request):
+    pass
+    return render(request,"app/about.html")
 # logout view
 class LogoutView(View):
     def get(self, request):
@@ -62,20 +64,20 @@ def detailedview(request, pk):
 def eventlist(request):
     pass
     return render(request, "app/eventlist.html")
-# @login_required
-# def event(request):
-#     if request.method == "POST":
-#         form = addeventForm(request.POST,request.FILES)
-#         if form.is_valid():
-#             # event_name=form.cleaned_data.get('event_name')
-#             # form.save()
-#             return redirect("event/CheckPaymentView")
-#         else:
-#             messages.error(request,"Enter the correct event")
-#             return render(request,"app/addevent.html",context={"addeventForm":form})
-#     else:
-#         form=addeventForm()
-#         return render(request,"app/addevent.html",context={"addeventForm":form})
+@login_required
+def event(request):
+    if request.method == "POST":
+        form = addeventForm(request.POST,request.FILES)
+        if form.is_valid():
+            # event_name=form.cleaned_data.get('event_name')
+            # form.save()
+            return redirect("event/CheckPaymentView")
+        else:
+            messages.error(request,"Enter the correct event")
+            return render(request,"app/eventaddingform.html",context={"addeventForm":form})
+    else:
+        form=addeventForm()
+        return render(request,"app/eventaddingform.html",context={"addeventForm":form})
 
 
 # user login
@@ -91,7 +93,8 @@ def user_login(request):
             if user is not None:
                 messages.info(request, "Login Successfull")
                 login(request, user)
-                return redirect("eventlist")
+                # return redirect("eventlist")
+                return redirect("event")
             # else:
             #     messages.error(request,"Invalid login")
             #     return render(request,"app/login.html",context={"login_form":form})
@@ -126,23 +129,12 @@ class CheckPaymentView(TemplateView):
 
 def successview(request):
     # template_name = "app/success.html"
-    # def event(request):
-        if request.method == "POST":
-            form = addeventForm(request.POST, request.FILES)
-            if form.is_valid():
-                # event_name=form.cleaned_data.get('event_name')
-                form.save()
-                context = {
-                    'payment_status': 'success'
-                }
-                return render(request,"app/success.html",context)
-                # return redirect("event/CheckPaymentView")
-            else:
-                messages.error(request, "Enter the correct event")
-                return render(request, "app/addevent.html", context={"addeventForm": form})
-        else:
-            form = addeventForm()
-            return render(request, "app/addevent.html", context={"addeventForm": form})
+    context = {
+        'payment_status': 'success'
+    }
+    return render(request,"app/success.html",context)
+        # return redirect("event/CheckPaymentView")
+    
 
     # here we need to save the form adddeventform
     # def get_context_data(self, **kwargs):
@@ -193,7 +185,8 @@ class CreateCheckoutSessionView(View):
 
 
 
-def userevents(request,user_name):
+def userevents(request):
+    user_name = request.user.username
     # username=user_name
     event_details = addevent.objects.filter(event_coordinator=user_name)
     print(user_name)
