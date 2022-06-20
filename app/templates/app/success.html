@@ -1,22 +1,79 @@
+{% extends 'app/base.html'%}
 {% load static %}
-<html>
-
-<head>
-    <title>Thanks for your order!</title>
-</head>
-
-<body>
-    {% if payment_status == 'success' %}
-    <section>
-        <p>
-            Hey, congrats your event is published
-        </p>
-        <a href="{% url 'MytemplateView' %}">Home</a>
-    </section>
-    {% else %}
-        <p>oops,..  Something went wrong please try again</p>
-        <a href="{% url 'MytemplateView' %}">Home</a>
-    {% endif %}
-</body>
-
-</html>
+{% block body %}
+{% load crispy_forms_tags %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-item nav-link" href="{% url 'MytemplateView' %}">HOME</a>
+        <a class="nav-item nav-link" href="{% url 'about' %}">ABOUT</a>
+        {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'LogoutView' %}">LOGOUT</a>
+        {% else %}
+          <a class="nav-item nav-link" href="{% url 'user-login' %}">LOGIN</a>
+        {% endif %}
+      </div>
+    </div>
+  </nav>
+  <!-- header section end -->
+  <!-- about section start -->
+  <div class="about_section layout_padding">
+    <div class="container">
+      <div class="row">
+        {% if payment_status == 'success' %}
+        <section>
+            <p>
+               <h4> Hey, congrats your event is published</h4>
+            </p>
+            <!-- <a href="{% url 'MytemplateView' %}">Home</a> -->
+        </section>
+        {% else %}
+            <p><h4>oops,..  Something went wrong please try again</h4></p>
+            <!-- <a href="{% url 'MytemplateView' %}">Home</a> -->
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <!-- about section end -->
+  <!-- join us section start -->
+  <div class="join_section">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <h1 class="member_text"> To Publish Your Event? Join With Us</h1>
+        </div>
+        <div class="col-md-6">
+          <div class="join_bt"><a href="{% url 'user-login' %}">JOIN</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- join us section end -->
+  <!-- footer section start -->
+  <div class="footer_section layout_padding">
+    <div class="container">
+      <div class="">
+        <ul>
+          <li><img src="{% static 'images/call-icon-1.png'%}"><span class="call_text_left">+01 9876543210</span></li>
+          <br>
+          <li><img src="{% static 'images/mail-icon-1.png' %}"><span class="call_text_left">sayonetech@gmail.com</span>
+          </li><br>
+          <li><img src="{% static 'images/map-icon-1.png' %}"><span class="call_text_left">Sayone Technologies</span>
+          </li>
+        </ul>
+      </div>
+      <!-- <p class="lorem_ipsum_text">Sayone Technologies </p> -->
+    </div>
+  </div>
+  <!-- footer section end -->
+  <!-- copyright section start -->
+  <div class="copyright_section">
+    <div class="container">
+      <p class="copyright_text">*************</a></p>
+    </div>
+  </div>
+{% endblock body %}

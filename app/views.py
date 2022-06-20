@@ -64,14 +64,18 @@ def detailedview(request, pk):
 def eventlist(request):
     pass
     return render(request, "app/eventlist.html")
+
+
+
+    
 @login_required
 def event(request):
     if request.method == "POST":
         form = addeventForm(request.POST,request.FILES)
         if form.is_valid():
             # event_name=form.cleaned_data.get('event_name')
-            # form.save()
-            return redirect("event/CheckPaymentView")
+            form.save()
+            return redirect('/')
         else:
             messages.error(request,"Enter the correct event")
             return render(request,"app/eventaddingform.html",context={"addeventForm":form})
