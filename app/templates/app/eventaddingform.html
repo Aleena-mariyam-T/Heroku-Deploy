@@ -5,25 +5,31 @@
 
 <!-- body -->
 
-    <!-- header top section end -->
-    <!-- header section start -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-            aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <div class="navbar-nav">
-                <a class="nav-item nav-link" href="{% url 'MytemplateView' %}">HOME</a>
-                <a class="nav-item nav-link" href="{% url 'about' %}">ABOUT</a>
-                {% if user.is_authenticated %}
-                <a class="nav-item nav-link" href="{% url 'LogoutView' %}">LOGOUT</a>
-                {% else %}
-                <a class="nav-item nav-link" href="{% url 'userlogin' %}">LOGIN</a>
-                {% endif %}
-            </div>
+<!-- header top section end -->
+<!-- header section start -->
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
+        aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+        <div class="navbar-nav">
+            <a class="nav-item nav-link" href="{% url 'MytemplateView' %}">HOME</a>
+            <a class="nav-item nav-link" href="{% url 'about' %}">ABOUT</a>
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'LogoutView' %}">LOGOUT</a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'userlogin' %}">LOGIN</a>
+            {% endif %}
         </div>
-    </nav>
+    </div>
+</nav>
+    {% for msg in messages %}
+    <div class="alert alert-success alert-dismissible col-sm-2">
+        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+        <strong>{{msg}}</strong>
+      </div>  
+    {% endfor %}
     <!-- header section end -->
     <!-- about section start -->
     <div class="about_section layout_padding">
@@ -38,6 +44,14 @@
                         </div>
 
                     </form>
+                    <!-- <form method="POST" action="{% url 'event' %}" enctype="multipart/form-data" id="id-addevent-form">
+                        {% csrf_token %}
+                        {{addeventForm|crispy}}
+                        <div class="">
+                            <button type="submit" id="eventsubmit" class="login_bt">Save </button>
+                        </div>
+
+                    </form> -->
                 </div>
             </div>
         </div>
@@ -84,4 +98,4 @@
                 <p class="copyright_text">*************</a></p>
             </div>
         </div>
-{% endblock body %}
+        {% endblock body %}

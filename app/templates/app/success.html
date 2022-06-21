@@ -46,9 +46,15 @@
         <div class="col-md-6">
           <h1 class="member_text"> To Publish Your Event? Join With Us</h1>
         </div>
+        {% if user.is_authenticated %}
+        <div class="col-md-6">
+          <div class="join_bt"><a href="{% url 'event' %}">JOIN</a></div>
+        </div>
+        {% else %}
         <div class="col-md-6">
           <div class="join_bt"><a href="{% url 'user-login' %}">JOIN</a></div>
         </div>
+        {% endif %}
       </div>
     </div>
   </div>

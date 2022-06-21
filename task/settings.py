@@ -23,7 +23,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-4t5u(3_n(tpk$r%of-^1$jm0=e$*p_qbkbn4q6xurz62fx8)ez'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False   
+DEBUG = True   
 ALLOWED_HOSTS = ["event-django.herokuapp.com","127.0.0.1"]
 
 
@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'crispy_forms',
-    'app'
+    'app',
+    'phonenumber_field',
 ]
 
 MIDDLEWARE = [

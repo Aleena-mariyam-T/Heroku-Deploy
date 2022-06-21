@@ -12,7 +12,7 @@
       document
         .querySelector("#payment-form")
         .addEventListener("submit", handleSubmit);
-      
+
       // Fetches a payment intent and captures the client secret
       async function initialize() {
         const response = await fetch("/create-payment-intent", {
@@ -84,7 +84,8 @@
             break;
         }
       }
-      
+      console.log("*******")
+      console.log(paymentIntent.status);
       // ------- UI helpers -------
       
       function showMessage(messageText) {

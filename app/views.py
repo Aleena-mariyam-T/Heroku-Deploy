@@ -1,11 +1,13 @@
 from multiprocessing import context
+import stat
+from unicodedata import name
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
-from requests import request
-from .models import Ticket_types, addevent, Payment,Eventcomment
+from requests import request, session
+from .models import Ticket_types, addevent, Payment,Eventcomment,contactus
 from .forms import addeventForm,EventcommentForm
 from django.views import View
 from django.views.generic import TemplateView, View, DetailView,CreateView
@@ -45,7 +47,7 @@ def about(request):
 # logout view
 class LogoutView(View):
     def get(self, request):
-        messages.info(request, "You Logged out")
+        messages.success(request, "You Logged out")
         logout(request)
 
         return HttpResponseRedirect('/')
@@ -66,7 +68,7 @@ def eventlist(request):
     return render(request, "app/eventlist.html")
 
 
-
+status = "False"
     
 @login_required
 def event(request):
@@ -74,10 +76,11 @@ def event(request):
         form = addeventForm(request.POST,request.FILES)
         if form.is_valid():
             # event_name=form.cleaned_data.get('event_name')
-            form.save()
-            return redirect('/')
+            # if status=="True":
+                form.save()
+                status = "False"
+                return redirect("CheckPaymentView")
         else:
-            messages.error(request,"Enter the correct event")
             return render(request,"app/eventaddingform.html",context={"addeventForm":form})
     else:
         form=addeventForm()
@@ -95,8 +98,8 @@ def user_login(request):
             user = authenticate(username=username, password=password)
             print(user)
             if user is not None:
-                messages.info(request, "Login Successfull")
                 login(request, user)
+                messages.success(request, "Login successfully")
                 # return redirect("eventlist")
                 return redirect("event")
             # else:
@@ -117,7 +120,7 @@ def user_login(request):
 
 class CheckPaymentView(TemplateView):
     print("payment view")
-    template_name = "app/silver.html"
+    template_name = "app/checkout.html"
 
     def get_context_data(self, **kwargs):
         print("inside get method")
@@ -133,6 +136,7 @@ class CheckPaymentView(TemplateView):
 
 def successview(request):
     # template_name = "app/success.html"
+    status = "True"
     context = {
         'payment_status': 'success'
     }
@@ -176,7 +180,7 @@ class CreateCheckoutSessionView(View):
             payment_method_types=['card'],
             line_items=[
                 {
-                    # Provide the exact Price ID (for example, pr_1234) of the product you want to sell
+                    
                     'price': price.stripe_price_id,
                     'quantity': 1,
                 },
@@ -190,13 +194,15 @@ class CreateCheckoutSessionView(View):
 
 
 def userevents(request):
-    user_name = request.user.username
-    # username=user_name
-    event_details = addevent.objects.filter(event_coordinator=user_name)
-    print(user_name)
-    context = {
-        'event_details': event_details
-    }
-    return render(request,"app/userevents.html",context)
+    print("inside user events")
+    if request.method == 'POST':
+        print("inside post method",request)
+        name = request.POST['Name']
+        email = request.POST['Email']
+        phone_number = request.POST['phone_number']
+        msg = request.POST['msg']
+        contactus.objects.create(Name=name,Email=email,phone_number=phone_number,msg=msg)
+        print(name)
+    return redirect('/')
 
 

@@ -1,6 +1,5 @@
-from distutils.command.upload import upload
 from django.db import models
-
+from phonenumber_field.modelfields import PhoneNumberField
 # Create your models here.
 class addevent(models.Model):
     event_name = models.CharField(max_length=100) 
@@ -25,6 +24,7 @@ class Payment(models.Model):
     price = models.FloatField()
     stripe_product_id = models.CharField(max_length=100)
     stripe_price_id = models.CharField(max_length=100)
+    Payment_status = models.CharField(max_length=50)
     
     def __str__(self):
         return self.Ticket
@@ -32,3 +32,10 @@ class Payment(models.Model):
 class Eventcomment(models.Model):
     comment=models.ForeignKey(addevent, on_delete=models.CASCADE)
     new_comment=models.CharField(max_length=100)
+
+
+class contactus(models.Model):
+    Name = models.CharField(max_length=100)
+    Email = models.EmailField()
+    phone_number=PhoneNumberField()
+    msg = models.CharField(max_length=100)

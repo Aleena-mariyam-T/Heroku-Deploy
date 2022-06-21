@@ -18,6 +18,12 @@
     </div>
   </div>
 </nav>
+{% for msg in messages %}
+<div class="alert alert-danger alert-dismissible col-sm-2">
+  <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+  <strong>{{msg}}</strong>
+</div>
+{% endfor %}
 <!-- header section end -->
 <!-- banner section start -->
 <div class="banner_section">
@@ -135,8 +141,8 @@
         {% for event in events %}
         <div class="col-sm-4">
           {% if event.event_image %}
-          <img src="{{ event.event_image.url }}" class="img-responsive" alt=""/>
-          
+          <img src="{{ event.event_image.url }}" class="img-responsive" alt="" />
+
           {% endif %}
           <h1 class="classic_text">{{event.event_name}}</h1>
           <!-- <p class="consectetur_text"></p> -->
@@ -185,16 +191,17 @@
               <div class="col-md-6">
                 <div class="alex_bg">
                   <h3 class="alex_text">Alex jorze</h3>
-                  <p class="reader_text">evento is a wonderful website for event hosting. evento help me to host my events 
+                  <p class="reader_text">evento is a wonderful website for event hosting. evento help me to host my
+                    events
                     and i got more viewers in my event this more user-friendly wesite</p>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="alex_bg">
                   <h3 class="alex_text">Stip mark</h3>
-                  <p class="reader_text">evento is a Beautiful website where we can 
-                    choose the best event for us it provide us with detail information about the events 
-                   </p>
+                  <p class="reader_text">evento is a Beautiful website where we can
+                    choose the best event for us it provide us with detail information about the events
+                  </p>
                 </div>
               </div>
             </div>
@@ -256,11 +263,14 @@
         <div class="row">
           <div class="col-md-6">
             <div class="mail_section">
-              <input type="text" class="mail_text" placeholder="Name" name="text">
-              <input type="text" class="mail_text" placeholder="Email" name="text">
-              <input type="text" class="mail_text" placeholder="Phone Number" name="text">
-              <textarea class="massage-bt" placeholder="Massage" rows="5" id="comment" name="Massage"></textarea>
-              <div class="send_bt"><a href="#">SEND</a></div>
+              <form action="{% url 'userevents' %}" method="post" id="contactus-form">
+                {% csrf_token %}
+                <input type="text" class="mail_text" placeholder="Name" name="Name">
+                <input type="email" class="mail_text" placeholder="Email" name="Email">
+                <input type="text" class="mail_text" placeholder="Phone Number" name="phone_number">
+                <input type="text" class="massage-bt" placeholder="Message" rows="5" id="comment" name="msg"><br><br>
+                <button type="submit" class="login_bt contactus">Save</button>
+              </form>
             </div>
           </div>
           <div class="col-md-6">

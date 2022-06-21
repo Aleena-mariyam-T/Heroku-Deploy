@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from .models import addevent,Eventcomment
+from .models import addevent,Eventcomment,contactus
 from django.core.validators import EMPTY_VALUES
 class addeventForm(ModelForm):
     event_name = forms.CharField()
@@ -68,5 +68,5 @@ class addeventForm(ModelForm):
     # def clean_event_coordinator(self, *args)
 class EventcommentForm(ModelForm):
     class Meta:
-        model = Eventcomment
-        fields = ['new_comment']
+        model = contactus
+        fields ='__all__'
