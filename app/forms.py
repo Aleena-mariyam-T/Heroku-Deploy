@@ -57,10 +57,11 @@ class addeventForm(ModelForm):
             if event_end_date in EMPTY_VALUES:
                 self.errors["event_end_date"]=self.error_class(["Please Provide the End Date"])
         
-        start_date = self.cleaned_data.get("event_start_date", False)
-        end_date = self.cleaned_data.get("event_end_date", False)
-        if start_date > end_date:
-            raise forms.ValidationError("please Provide the Correct Date")
+        if event_start_date and event_end_date:
+            start_date = self.cleaned_data.get("event_start_date", False)
+            end_date = self.cleaned_data.get("event_end_date", False)
+            if start_date > end_date:
+                raise forms.ValidationError("please Provide the Correct Date")
         # else:
             # raise forms.ValidationError("please Provide the Correct")
 
