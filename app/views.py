@@ -7,8 +7,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import AuthenticationForm
 from requests import request, session
-from .models import Ticket_types, addevent, Payment,Eventcomment,contactus
-from .forms import addeventForm,EventcommentForm
+from .models import Ticket_types, addevent, Payment,Eventcomment,contactus, TempImage
+from .forms import addeventForm,TempImageForm
 from django.views import View
 from django.views.generic import TemplateView, View, DetailView,CreateView
 import stripe
@@ -68,23 +68,6 @@ def eventlist(request):
     return render(request, "app/eventlist.html")
 
 
-status = "False"
-    
-@login_required
-def event(request):
-    if request.method == "POST":
-        form = addeventForm(request.POST,request.FILES)
-        if form.is_valid():
-            # event_name=form.cleaned_data.get('event_name')
-            # if status=="True":
-                form.save()
-                status = "False"
-                return redirect("CheckPaymentView")
-        else:
-            return render(request,"app/eventaddingform.html",context={"addeventForm":form})
-    else:
-        form=addeventForm()
-        return render(request,"app/eventaddingform.html",context={"addeventForm":form})
 
 
 # user login
@@ -118,25 +101,96 @@ def user_login(request):
     #     return render(request,"app/login.html",context={"login_form":form})
 
 
-class CheckPaymentView(TemplateView):
-    print("payment view")
-    template_name = "app/checkout.html"
+class CreateCheckoutSessionView(View):
+    def post(self, request, *args, **kwargs):
+        print(request.FILES)
+        form = addeventForm(request.POST,request.FILES)
+        temp_image_form = TempImageForm({}, request.FILES)
+        temp_image_id = None
+        if form.is_valid():
+            if temp_image_form.is_valid():
+                temp_image_id = temp_image_form.save().id
+            else: 
+                print(temp_image_form.errors)
+            event_name = form.cleaned_data['event_name']
+            event_description = form.cleaned_data['event_description']
+            event_coordinator = form.cleaned_data['event_coordinator']
+            event_location = form.cleaned_data['event_location']
+            event_start_date = form.cleaned_data['event_start_date']
+            event_end_date = form.cleaned_data['event_end_date']
 
-    def get_context_data(self, **kwargs):
-        print("inside get method")
-        # product = Payment.objects.get(Ticket="Gold")
-        prices = Payment.objects.filter(Ticket="Gold")
-        context = super(CheckPaymentView, self).get_context_data(**kwargs)
+            # payment checkout
+            price = Payment.objects.get(id=self.kwargs["pk"])
+            checkout_session = stripe.checkout.Session.create(
+                payment_method_types=['card'],
+                line_items=[
+                    {
+                        
+                        'price': price.stripe_price_id,
+                        'quantity': 1,
+                    },
+                ],
+                mode='payment',
+                success_url=YOUR_DOMAIN + f'/successview?event_name={event_name}&event_description={event_description}&event_coordinator={event_coordinator}&event_location={event_location}&event_start_date={event_start_date}&event_end_date={event_end_date}&temp_image_id={temp_image_id}',
+                cancel_url=YOUR_DOMAIN + '/cancel',
+            )
+            return redirect(checkout_session.url)
+            # event_name = form.cleaned_data['evnet_name']
+            # return redirect("CheckPaymentView")
+        else:
+            return render(request,"app/eventaddingform.html",context={"addeventForm":form})
+
+
+
+@login_required
+def event(request):
+    prices = Payment.objects.filter(Ticket="Gold")[0]
+    context = {
+        'prices': prices,
+    }
+    if request.method == "POST":
+        form = addeventForm(request.POST,request.FILES)
+        if form.is_valid():
+            # event_name=form.cleaned_data.get('event_name')
+            # if status=="True":
+                form.save()
+                return redirect("CheckPaymentView")
+        else:
+            context.update({
+                "addeventForm":form
+            })
+            return render(request,"app/eventaddingform.html",context)
+    else:
+        form=addeventForm()
         context.update({
-            # "product": product,
-            "prices": prices
+            "addeventForm":form
         })
-        return context
+        return render(request,"app/eventaddingform.html",context)
+
 
 
 def successview(request):
     # template_name = "app/success.html"
-    status = "True"
+    temp_image_id = request.GET.get('temp_image_id')
+    data = {
+        "event_name": request.GET.get('event_name'),
+        "event_description": request.GET.get('event_description'),
+        "event_coordinator": request.GET.get('event_coordinator'),
+        "event_location": request.GET.get('event_location'),
+        "event_start_date": request.GET.get('event_start_date'),
+        "event_end_date": request.GET.get('event_end_date'),
+        "event_image": TempImage.objects.get(id = temp_image_id).event_image,
+    }
+
+    # event_image = TempImage.objects.get(id = temp_image_id).event_image
+
+
+    form = addeventForm(data)
+    if form.is_valid():
+        # event_name=form.cleaned_data.get('event_name')
+        # if status=="True":
+            form.save()
+            status = "False"
     context = {
         'payment_status': 'success'
     }
@@ -154,6 +208,18 @@ def successview(request):
         # return context
 
 
+class CheckPaymentView(TemplateView):
+    template_name = "app/checkout.html"
+
+    def get_context_data(self, **kwargs):
+        prices = Payment.objects.filter(Ticket="Gold")
+        context = super(CheckPaymentView, self).get_context_data(**kwargs)
+        context.update({
+            # "product": product,
+            "prices": prices
+        })
+        return context
+
 class CancelView(TemplateView):
     # cancel form and redirect to home
     template_name = "app/cancel.html"
@@ -167,29 +233,6 @@ class CancelView(TemplateView):
 
 
 YOUR_DOMAIN = "http://127.0.0.1:8000"
-
-
-class CreateCheckoutSessionView(View):
-    print("checkoutview functn")
-
-    def post(self, request, *args, **kwargs):
-        print("inside post")
-        price = Payment.objects.get(id=self.kwargs["pk"])
-        print(price)
-        checkout_session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            line_items=[
-                {
-                    
-                    'price': price.stripe_price_id,
-                    'quantity': 1,
-                },
-            ],
-            mode='payment',
-            success_url=YOUR_DOMAIN + '/successview',
-            cancel_url=YOUR_DOMAIN + '/cancel',
-        )
-        return redirect(checkout_session.url)
 
 
 

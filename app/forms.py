@@ -1,7 +1,8 @@
 from django import forms
 from django.forms import ModelForm
-from .models import addevent,Eventcomment,contactus
+from .models import addevent,Eventcomment,contactus, TempImage
 from django.core.validators import EMPTY_VALUES
+
 class addeventForm(ModelForm):
     event_name = forms.CharField()
     event_description=forms.CharField(widget=forms.Textarea,required=False)
@@ -70,3 +71,10 @@ class EventcommentForm(ModelForm):
     class Meta:
         model = contactus
         fields ='__all__'
+
+
+class TempImageForm(ModelForm):
+    event_image = forms.ImageField()
+    class Meta:
+        model = TempImage
+        fields = "__all__"

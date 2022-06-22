@@ -36,7 +36,11 @@
         <div class="container">
             <div class="row" style="margin-top: -5%;">
                 <div class="col-md-8">
-                    <form method="POST" action="{% url 'event' %}" enctype="multipart/form-data" id="id-addevent-form">
+                    <div>
+                            For Publishing your event you need to pay : ${{ prices.price }}
+                            <br><br>
+                        </div>
+                    <form method="POST" action="{% url 'create-checkout-session' prices.id %}" enctype="multipart/form-data" id="id-addevent-form">
                         {% csrf_token %}
                         {{addeventForm|crispy}}
                         <div class="">

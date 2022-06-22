@@ -39,3 +39,6 @@ class contactus(models.Model):
     Email = models.EmailField()
     phone_number=PhoneNumberField()
     msg = models.CharField(max_length=100)
+
+class TempImage(models.Model):
+    event_image = models.ImageField(upload_to = 'media/')
